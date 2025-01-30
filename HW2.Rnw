@@ -68,7 +68,7 @@ mid.points <- (left.points+right.points)/2
   \item Write code that computes the area using the Trapezoidial Rule.\\
   \textbf{Solution:}
 <<size="scriptsize", warning=FALSE, message=FALSE>>=
-# Write code for answer here.
+(trap.area <- (delta.x / 2) * (integrand(a) + 2 * sum(integrand(left.points[-1])) + integrand(b)))
 @
   \item Write a function that takes \texttt{a}, \texttt{b}, and number of 
   rectangles (\texttt{n.rect}) in as input and returns the Trapezoidial Rule 
@@ -76,7 +76,7 @@ mid.points <- (left.points+right.points)/2
   skeleton below. When you are done, remove \texttt{eval=FALSE} to show that
   the function provides the expected result for the example above.\\
   \textbf{Solution:}
-<<eval=FALSE, size="scriptsize", warning=FALSE, message=FALSE>>=
+<<size="scriptsize", warning=FALSE, message=FALSE>>=
 riemann.sums <- function(fnct,                        # function to integrate
                          a,                           # lower bound of integral
                          b,                           # upper bound of integral
@@ -97,14 +97,22 @@ riemann.sums <- function(fnct,                        # function to integrate
   ######################################
   # Compute Area
   ######################################
+(delta.x <- (b-a)/n.rect)
+
+left.points <- a + 0:(n.rect -1)*(delta.x)
+
+right.points <- a + 1:n.rect * (delta.x)
+
+mid.points <- (left.points+right.points)/2
+  
   if(method == "Left"){
-    # Add necessary code here
+    area <- sum(delta.x*fnct(left.points))
   }else if(method == "Right"){
-    # Add necessary code here
+    area <- sum(delta.x*fnct(right.points))
   }else if(method == "Midpoint"){
-    # Add necessary code here
+   area <- sum(delta.x*fnct(mid.points))
   }else if(method == "Trapezoidial"){
-    # Add necessary code here
+    area <- (delta.x / 2) * (fnct(a) + 2 * sum(fnct(left.points[-1])) + fnct(b))
   }else{
     stop("Please select a valid method (e.g., 'Left', 'Right', 'Midpoint', 'Trapezoidial')")
   }
